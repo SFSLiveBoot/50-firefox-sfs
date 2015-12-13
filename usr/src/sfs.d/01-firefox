@@ -1,0 +1,12 @@
+#!/bin/sh
+
+. /opt/LiveBootUtils/scripts/common.func
+. "$(dirname "$0")/.common.sh"
+
+set -e
+
+mkdir -p "$DESTDIR/$inst_path"
+tbz_local="$(dl_file "$redirector_url")"
+
+set -x
+tar xjvf "$tbz_local" -C "$DESTDIR/$inst_path"

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+: ${moz_home:=$HOME/.mozilla/firefox}
+: ${profiles_ini:=$moz_home/profiles.ini}
+
+test ! -e "$profiles_ini" || for prefs_js in "$moz_home"/*/prefs.js;do
+  prof_d="${prefs_js%%/prefs.js}"
+  prof_d="${prof_d##*/}"
+  grep -Fxq "Path=$prof_d" "$profiles_ini" ||
+    cat >>"$profiles_ini" <<EOF
+[Profile$(grep -c "Name=" "$profiles_ini")]
+Name=${prof_d#*.}
+IsRelative=1
+Path=$prof_d
+
+EOF
+done
+
+test -n "${1+has_args}" || set -- -new-instance -ProfileManager
+
+exec "${MOZ_DIST_BIN:-/opt/firefox}/firefox" "$@"
