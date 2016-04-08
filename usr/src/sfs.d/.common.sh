@@ -1,3 +1,8 @@
+#!/bin/sh
+
+: ${lbu:=/opt/LiveBootUtils}
+. "$lbu/scripts/common.func"
+
 : ${locale:=en-US}
 : ${arch:=$(uname -m)}
 : ${name:=firefox}
