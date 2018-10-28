@@ -1,7 +1,7 @@
 #!/bin/sh
 
-: ${moz_home:=$HOME/.mozilla/firefox}
-: ${profiles_ini:=$moz_home/profiles.ini}
+: "${moz_home:=$HOME/.mozilla/firefox}"
+: "${profiles_ini:=$moz_home/profiles.ini}"
 
 test ! -e "$profiles_ini" || for prefs_js in "$moz_home"/*/prefs.js;do
   prof_d="${prefs_js%%/prefs.js}"
@@ -18,4 +18,5 @@ done
 
 test -n "${1+has_args}" || set -- -new-instance -ProfileManager
 
+export MOZ_USE_XINPUT2=1
 exec "${MOZ_DIST_BIN:-/opt/firefox}/firefox" "$@"
