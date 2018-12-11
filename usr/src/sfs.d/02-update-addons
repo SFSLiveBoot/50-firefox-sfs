@@ -10,8 +10,12 @@ set -e
 
 for ext in "$DESTDIR"/home/user/.mozilla/firefox/*/extensions/*;do
   ext_name="$(basename "$ext" .xpi)"
-  ext_info_url="$api_url/search/guid:${ext_name}?src=firefox&appOS=Linux&appVersion=${app_ver}"
-  ext_url="$(curl -g -s "$ext_info_url" | xmllint --xpath "/searchresults/addon/install/text()" -)"
+  ext_info_url="$api_url/search/guid:${ext_name}?src=${app_name}&appOS=Linux&appVersion=${app_ver}"
+  ext_url="$(curl -g -s "$ext_info_url" | xmllint --xpath "/searchresults/addon/install/text()" -)" || {
+    echo "WARNING: No installable version of extension '$ext_name' for $app_name version $app_ver" >&2
+    rm -rf "$ext"
+    continue
+  }
   ext_xpi="$(dl_file "$ext_url")"
   if test -d "$ext";then
     7z x -o"$ext" "$ext_xpi"
