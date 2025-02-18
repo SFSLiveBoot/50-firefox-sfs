@@ -8,4 +8,4 @@ mkdir -p "$DESTDIR/$inst_path"
 tbz_local="$(dl_file "$(latest_url)")"
 
 set -x
-tar xjvf "$tbz_local" -C "$DESTDIR/$inst_path"
+tar -xf "$tbz_local" -C "$DESTDIR/$inst_path"
