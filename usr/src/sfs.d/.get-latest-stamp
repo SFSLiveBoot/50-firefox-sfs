@@ -1,0 +1,6 @@
+#!/bin/sh
+
+set -e
+. "$(dirname "$0")/.common.sh"
+
+date --date="$(curl -ISfgs "$(latest_url)" | grep -i ^last-modified: | cut -f2- -d,)" +%s
